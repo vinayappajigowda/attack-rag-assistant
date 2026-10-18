@@ -1,0 +1,68 @@
+{"id": "Q01", "question": "An attacker tries one common password against hundreds of accounts. Which technique is that?", "expected": ["T1110.003"], "kind": "technique", "category": "technique"}
+{"id": "Q02", "question": "Someone is guessing many passwords for a single user account", "expected": ["T1110.001", "T1110"], "kind": null, "category": "technique"}
+{"id": "Q03", "question": "Attackers reuse usernames and passwords leaked from another breach", "expected": ["T1110.004"], "kind": null, "category": "technique"}
+{"id": "Q04", "question": "A user keeps getting MFA push notifications they didn't request", "expected": ["T1621"], "kind": null, "category": "technique"}
+{"id": "Q05", "question": "Attacker wipes the Windows Security event log to hide their tracks", "expected": ["T1685.005", "T1070"], "kind": null, "category": "technique"}
+{"id": "Q06", "question": "Malicious encoded PowerShell commands being run on endpoints", "expected": ["T1059.001", "T1027"], "kind": null, "category": "technique"}
+{"id": "Q07", "question": "Malware creates a scheduled task to run at every logon", "expected": ["T1053.005"], "kind": null, "category": "technique"}
+{"id": "Q08", "question": "Attacker creates a new local user account on a compromised Windows host", "expected": ["T1136.001"], "kind": null, "category": "technique"}
+{"id": "Q09", "question": "Dumping credentials from LSASS process memory with Mimikatz", "expected": ["T1003.001"], "kind": null, "category": "technique"}
+{"id": "Q10", "question": "Phishing email with a malicious Word attachment", "expected": ["T1566.001"], "kind": null, "category": "technique"}
+{"id": "Q11", "question": "Phishing email containing a link to a fake login page", "expected": ["T1566.002"], "kind": null, "category": "technique"}
+{"id": "Q12", "question": "Requesting Kerberos service tickets to crack service account passwords offline", "expected": ["T1558.003"], "kind": null, "category": "technique"}
+{"id": "Q13", "question": "Using an NTLM password hash to authenticate without knowing the password", "expected": ["T1550.002"], "kind": null, "category": "technique"}
+{"id": "Q14", "question": "Lateral movement over RDP using stolen credentials", "expected": ["T1021.001"], "kind": null, "category": "technique"}
+{"id": "Q15", "question": "Ransomware encrypting files on file servers", "expected": ["T1486"], "kind": null, "category": "technique"}
+{"id": "Q16", "question": "Deleting volume shadow copies so the victim can't restore files", "expected": ["T1490"], "kind": null, "category": "technique"}
+{"id": "Q17", "question": "Exfiltrating data by uploading it to cloud storage like Dropbox or Google Drive", "expected": ["T1567.002"], "kind": null, "category": "technique"}
+{"id": "Q18", "question": "Malware tunnelling command and control traffic over DNS queries", "expected": ["T1071.004"], "kind": null, "category": "technique"}
+{"id": "Q19", "question": "Attacker disables antivirus and EDR on the endpoint", "expected": ["T1685"], "kind": null, "category": "technique"}
+{"id": "Q20", "question": "Persistence through registry Run keys", "expected": ["T1547.001"], "kind": null, "category": "technique"}
+{"id": "Q21", "question": "Injecting code into another running process", "expected": ["T1055"], "kind": null, "category": "technique"}
+{"id": "Q22", "question": "Stealing browser session cookies to bypass MFA", "expected": ["T1539"], "kind": null, "category": "technique"}
+{"id": "Q23", "question": "Exploiting a vulnerable internet-facing web server to get initial access", "expected": ["T1190"], "kind": null, "category": "technique"}
+{"id": "Q24", "question": "Scanning the internal network for open ports and services", "expected": ["T1046"], "kind": null, "category": "technique"}
+{"id": "Q25", "question": "Compressing collected files into an archive before exfiltration", "expected": ["T1560"], "kind": null, "category": "technique"}
+{"id": "Q26", "question": "Downloading additional tools onto a compromised host", "expected": ["T1105"], "kind": null, "category": "technique"}
+{"id": "Q27", "question": "Using WMI to execute commands on a remote machine", "expected": ["T1047"], "kind": null, "category": "technique"}
+{"id": "Q28", "question": "Forging Kerberos TGTs with the krbtgt hash", "expected": ["T1558.001"], "kind": null, "category": "technique"}
+{"id": "Q29", "question": "Pretending to be a domain controller to replicate password hashes", "expected": ["T1003.006"], "kind": null, "category": "technique"}
+{"id": "Q30", "question": "A web shell uploaded to an IIS server", "expected": ["T1505.003"], "kind": null, "category": "technique"}
+{"id": "Q31", "question": "Installing a new Windows service for persistence", "expected": ["T1543.003"], "kind": null, "category": "technique"}
+{"id": "Q32", "question": "Abusing legitimate remote access software such as AnyDesk", "expected": ["T1219"], "kind": null, "category": "technique"}
+{"id": "Q33", "question": "Using stolen credentials for cloud accounts like Azure AD or AWS", "expected": ["T1078.004"], "kind": null, "category": "technique"}
+{"id": "Q34", "question": "How can I detect password spraying?", "expected": ["T1110.003"], "kind": "detection", "category": "detection"}
+{"id": "Q35", "question": "What logs should I monitor to detect Kerberoasting?", "expected": ["T1558.003"], "kind": "detection", "category": "detection"}
+{"id": "Q36", "question": "How do I detect MFA request generation?", "expected": ["T1621"], "kind": "detection", "category": "detection"}
+{"id": "Q37", "question": "How would I spot LSASS credential dumping in my SIEM?", "expected": ["T1003.001"], "kind": "detection", "category": "detection"}
+{"id": "Q38", "question": "What should I monitor to detect scheduled task persistence?", "expected": ["T1053.005"], "kind": "detection", "category": "detection"}
+{"id": "Q39", "question": "How do I detect shadow copy deletion?", "expected": ["T1490"], "kind": "detection", "category": "detection"}
+{"id": "Q40", "question": "How do I prevent password spraying attacks?", "expected": ["T1110.003"], "kind": "mitigation", "category": "mitigation"}
+{"id": "Q41", "question": "How can I stop MFA fatigue attacks?", "expected": ["T1621"], "kind": "mitigation", "category": "mitigation"}
+{"id": "Q42", "question": "What mitigations reduce the risk of pass the hash?", "expected": ["T1550.002"], "kind": "mitigation", "category": "mitigation"}
+{"id": "Q43", "question": "How do I protect against spearphishing attachments?", "expected": ["T1566.001"], "kind": "mitigation", "category": "mitigation"}
+{"id": "Q44", "question": "How can we prevent Kerberoasting?", "expected": ["T1558.003"], "kind": "mitigation", "category": "mitigation"}
+{"id": "Q45", "question": "Which threat groups use password spraying?", "expected": ["T1110.003"], "kind": "groups", "category": "groups"}
+{"id": "Q46", "question": "Which threat actors use MFA request generation?", "expected": ["T1621"], "kind": "groups", "category": "groups"}
+{"id": "Q47", "question": "Is the Apache Log4j2 remote code execution vulnerability known to be exploited?", "expected": ["CVE-2021-44228"], "kind": "kev", "category": "kev"}
+{"id": "Q48", "question": "What is the required action for CVE-2020-1938?", "expected": ["CVE-2020-1938"], "kind": "kev", "category": "kev"}
+{"id": "Q49", "question": "Microsoft Netlogon privilege escalation vulnerability", "expected": ["CVE-2020-1472"], "kind": "kev", "category": "kev"}
+{"id": "Q50", "question": "MOVEit Transfer SQL injection vulnerability", "expected": ["CVE-2023-34362"], "kind": "kev", "category": "kev"}
+{"id": "Q51", "question": "Is the Palo Alto PAN-OS command injection vulnerability in KEV?", "expected": ["CVE-2024-3400"], "kind": "kev", "category": "kev"}
+{"id": "Q52", "question": "Fortinet FortiOS SSL VPN path traversal vulnerability", "expected": ["CVE-2018-13379"], "kind": "kev", "category": "kev"}
+{"id": "Q53", "question": "Is Log4Shell being exploited and what should we do?", "expected": ["CVE-2021-44228"], "kind": "kev", "category": "nickname"}
+{"id": "Q54", "question": "Tell me about EternalBlue", "expected": ["CVE-2017-0144"], "kind": "kev", "category": "nickname"}
+{"id": "Q55", "question": "What is Zerologon?", "expected": ["CVE-2020-1472"], "kind": "kev", "category": "nickname"}
+{"id": "Q56", "question": "Is Citrix Bleed in the KEV catalogue?", "expected": ["CVE-2023-4966"], "kind": "kev", "category": "nickname"}
+{"id": "Q57", "question": "What should I do about PrintNightmare?", "expected": ["CVE-2021-34527"], "kind": "kev", "category": "nickname"}
+{"id": "Q58", "question": "Ghostcat vulnerability", "expected": ["CVE-2020-1938"], "kind": "kev", "category": "nickname"}
+{"id": "Q59", "question": "Is Shellshock still being exploited?", "expected": ["CVE-2014-6271"], "kind": "kev", "category": "nickname_unseen"}
+{"id": "Q60", "question": "What is ProxyShell?", "expected": ["CVE-2021-34473"], "kind": "kev", "category": "nickname_unseen"}
+{"id": "Q61", "question": "Spring4Shell remote code execution", "expected": ["CVE-2022-22965"], "kind": "kev", "category": "nickname_unseen"}
+{"id": "Q62", "question": "Explain T1078", "expected": ["T1078"], "kind": null, "category": "exact_id"}
+{"id": "Q63", "question": "What does CVE-2023-23397 affect?", "expected": ["CVE-2023-23397"], "kind": "kev", "category": "exact_id"}
+{"id": "Q64", "question": "Give me detection ideas for T1059.001", "expected": ["T1059.001"], "kind": "detection", "category": "exact_id"}
+{"id": "X01", "question": "How do I bake sourdough bread?", "expected": [], "kind": null, "category": "out_of_scope"}
+{"id": "X02", "question": "What is the capital of Australia?", "expected": [], "kind": null, "category": "out_of_scope"}
+{"id": "X03", "question": "Recommend a good laptop for gaming", "expected": [], "kind": null, "category": "out_of_scope"}
+{"id": "X04", "question": "Who won the 2022 football World Cup?", "expected": [], "kind": null, "category": "out_of_scope"}

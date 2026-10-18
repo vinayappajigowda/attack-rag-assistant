@@ -1,0 +1,10 @@
+.venv/
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+# The raw ATT&CK bundle is ~50 MB; build_index.py downloads it
+data/raw/
+.env
+.DS_Store
+Thumbs.db

@@ -1,0 +1,106 @@
+{
+  "answers": {
+    "extractive": {
+      "backend": "extractive",
+      "model": null,
+      "questions": 88,
+      "grounded": "88/88",
+      "answers_with_invalid_citations": 0,
+      "answers_with_invented_ids": 0,
+      "names_expected_id": "75/84",
+      "cites_expected_source": "74/84",
+      "errors": 0
+    },
+    "ollama_qwen2.5-7b": {
+      "backend": "ollama",
+      "model": "qwen2.5:7b",
+      "questions": 88,
+      "grounded": "88/88",
+      "answers_with_invalid_citations": 0,
+      "answers_with_invented_ids": 0,
+      "names_expected_id": "43/84",
+      "cites_expected_source": "71/84",
+      "errors": 0
+    },
+    "ollama_llama3.2-3b": {
+      "backend": "ollama",
+      "model": "llama3.2:3b",
+      "questions": 88,
+      "grounded": "78/88",
+      "answers_with_invalid_citations": 0,
+      "answers_with_invented_ids": 0,
+      "names_expected_id": "35/84",
+      "cites_expected_source": "58/84",
+      "errors": 0
+    }
+  },
+  "development": [
+    {
+      "method": "TF-IDF",
+      "questions": 64,
+      "hit@1": 0.5,
+      "hit@5": 0.812,
+      "MRR": 0.616
+    },
+    {
+      "method": "BM25",
+      "questions": 64,
+      "hit@1": 0.578,
+      "hit@5": 0.844,
+      "MRR": 0.686
+    },
+    {
+      "method": "Hybrid (no aliases)",
+      "questions": 64,
+      "hit@1": 0.641,
+      "hit@5": 0.844,
+      "MRR": 0.727
+    },
+    {
+      "method": "Hybrid + aliases",
+      "questions": 64,
+      "hit@1": 0.719,
+      "hit@5": 0.906,
+      "MRR": 0.799
+    }
+  ],
+  "holdout": [
+    {
+      "method": "TF-IDF",
+      "questions": 20,
+      "hit@1": 0.45,
+      "hit@5": 0.9,
+      "MRR": 0.622
+    },
+    {
+      "method": "BM25",
+      "questions": 20,
+      "hit@1": 0.55,
+      "hit@5": 0.95,
+      "MRR": 0.706
+    },
+    {
+      "method": "Hybrid (no aliases)",
+      "questions": 20,
+      "hit@1": 0.75,
+      "hit@5": 0.95,
+      "MRR": 0.814
+    },
+    {
+      "method": "Hybrid + aliases",
+      "questions": 20,
+      "hit@1": 0.85,
+      "hit@5": 0.95,
+      "MRR": 0.877
+    }
+  ],
+  "scope_gate": {
+    "off_topic_refused": "4/4",
+    "on_topic_answered": "81/84",
+    "on_topic_refused": [
+      "Q59",
+      "Q60",
+      "Q61"
+    ]
+  }
+}

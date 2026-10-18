@@ -1,0 +1,13 @@
+{
+  "documents": 4477,
+  "by_kind": {
+    "technique": 866,
+    "detection": 725,
+    "mitigation": 623,
+    "groups": 515,
+    "kev": 1748
+  },
+  "attack_version": "updated 2026-10-12",
+  "kev_catalog": "2026.10.16",
+  "kev_entries": 1748
+}

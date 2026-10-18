@@ -1,0 +1,17 @@
+{
+  "_note": "Well-known nicknames analysts use, mapped to the IDs they refer to. Search can't guess these from the official names.",
+  "log4shell": "CVE-2021-44228",
+  "proxylogon": "CVE-2021-26855",
+  "eternalblue": "CVE-2017-0144",
+  "citrix bleed": "CVE-2023-4966",
+  "printnightmare": "CVE-2021-34527",
+  "zerologon": "CVE-2020-1472",
+  "ghostcat": "CVE-2020-1938",
+  "bluekeep": "CVE-2019-0708",
+  "heartbleed": "CVE-2014-0160",
+  "follina": "CVE-2022-30190",
+  "mfa fatigue": "T1621",
+  "mfa bombing": "T1621",
+  "push bombing": "T1621",
+  "push fatigue": "T1621"
+}

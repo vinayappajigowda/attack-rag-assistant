@@ -1,0 +1,20 @@
+{"id": "H01", "question": "Adversary uses a stolen session token to access a cloud mailbox", "expected": ["T1550.001", "T1539", "T1528"], "kind": null, "category": "holdout"}
+{"id": "H02", "question": "Attacker modifies the hosts file firewall rules to allow inbound traffic", "expected": ["T1686"], "kind": null, "category": "holdout"}
+{"id": "H03", "question": "Keylogger capturing user keystrokes", "expected": ["T1056.001"], "kind": null, "category": "holdout"}
+{"id": "H04", "question": "Attackers enumerate Active Directory users and groups", "expected": ["T1087.002", "T1069.002", "T1087"], "kind": null, "category": "holdout"}
+{"id": "H05", "question": "Malicious macro in an Excel file runs when the user enables content", "expected": ["T1204.002", "T1566.001"], "kind": null, "category": "holdout"}
+{"id": "H06", "question": "Clearing bash history on a Linux server", "expected": ["T1070.003"], "kind": null, "category": "holdout"}
+{"id": "H07", "question": "Attacker adds their own SSH key to authorized_keys for persistence", "expected": ["T1098.004"], "kind": null, "category": "holdout"}
+{"id": "H08", "question": "Using PsExec to run commands on other hosts over SMB", "expected": ["T1021.002", "T1569.002"], "kind": null, "category": "holdout"}
+{"id": "H09", "question": "How can I detect pass the hash?", "expected": ["T1550.002"], "kind": "detection", "category": "holdout"}
+{"id": "H10", "question": "How do I detect a new local administrator account being created?", "expected": ["T1136.001", "T1098"], "kind": "detection", "category": "holdout"}
+{"id": "H11", "question": "How do I prevent credential dumping from LSASS?", "expected": ["T1003.001"], "kind": "mitigation", "category": "holdout"}
+{"id": "H12", "question": "How do we mitigate web shells on our servers?", "expected": ["T1505.003"], "kind": "mitigation", "category": "holdout"}
+{"id": "H13", "question": "Which groups use Kerberoasting?", "expected": ["T1558.003"], "kind": "groups", "category": "holdout"}
+{"id": "H14", "question": "Cisco IOS XE web UI privilege escalation", "expected": ["CVE-2023-20198"], "kind": "kev", "category": "holdout"}
+{"id": "H15", "question": "Is the Outlook privilege escalation vulnerability from 2023 known exploited?", "expected": ["CVE-2023-23397"], "kind": "kev", "category": "holdout"}
+{"id": "H16", "question": "Microsoft Exchange Server ProxyLogon remote code execution", "expected": ["CVE-2021-26855"], "kind": "kev", "category": "holdout"}
+{"id": "H17", "question": "What should we do about BlueKeep?", "expected": ["CVE-2019-0708"], "kind": "kev", "category": "holdout"}
+{"id": "H18", "question": "Heartbleed OpenSSL", "expected": ["CVE-2014-0160"], "kind": "kev", "category": "holdout"}
+{"id": "H19", "question": "Follina MSDT vulnerability", "expected": ["CVE-2022-30190"], "kind": "kev", "category": "holdout"}
+{"id": "H20", "question": "Give me mitigations for T1486", "expected": ["T1486"], "kind": "mitigation", "category": "holdout"}

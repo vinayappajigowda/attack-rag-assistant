@@ -1,0 +1,288 @@
+id,question,expected,backend,in_scope,grounded,citations,invalid_citations,invented_ids,names_expected_id,cites_expected_source,said_not_covered,error,answer
+Q01,An attacker tries one common password against hundreds of accounts. Which technique is that?,T1110.003,ollama,True,True,1,0,,True,True,False,,The technique is T1110.003 Brute Force: Password Spraying [1].
+Q02,Someone is guessing many passwords for a single user account,T1110.001 / T1110,ollama,True,True,2,0,,True,True,False,,"This scenario aligns with the detection strategy for T1110.001 Brute Force: Password Guessing [1]. You can detect such activity by monitoring for a series of authentication failures (Event ID 4625 in Windows) targeting the same user account over time from one or more remote IPs [1]. Logs from the WinEventLog:Security source in Windows can help identify this pattern. Additionally, repeated failed login attempts in other environments like Linux (via syslog), macOS (via unifiedlog), or SaaS platforms (via API or sign-in logs) can also indicate password guessing attempts [1][5]."
+Q03,Attackers reuse usernames and passwords leaked from another breach,T1110.004,ollama,True,True,1,0,,True,True,False,,"The technique described is T1110.004 Brute Force: Credential Stuffing [1]. Attackers reuse usernames and passwords leaked from another breach to perform credential stuffing attacks. This can be detected by monitoring multiple failed authentication attempts using distinct username/password pairs from a single IP address or session within a short time window, targeting common services like RDP or SMB [1]."
+Q04,A user keeps getting MFA push notifications they didn't request,T1621,ollama,True,True,4,0,,False,True,False,,"This situation could indicate an adversary attempting to exploit Multi-Factor Authentication Request Generation [1][3]. To mitigate this, train users to only accept valid push notifications and to report suspicious ones [2][5]. Additionally, monitor for excessive or anomalous MFA push notifications, especially when originating from unusual IPs or geolocations [3]."
+Q05,Attacker wipes the Windows Security event log to hide their tracks,T1685.005 / T1070,ollama,True,True,0,0,,False,False,True,,The sources don't cover this.
+Q06,Malicious encoded PowerShell commands being run on endpoints,T1059.001 / T1027,ollama,True,True,3,0,,False,True,False,,"To detect malicious encoded PowerShell commands being run on endpoints, look for behavioral chains where PowerShell is launched with encoded commands, unusual parent processes, or suspicious modules loaded [1]. Additionally, ensure that security tools are configured to analyze the encoding properties of files and detect anomalies that deviate from standard encoding practices [2]. This includes monitoring for the execution of PowerShell commands that may be obfuscated or encoded [3]."
+Q07,Malware creates a scheduled task to run at every logon,T1053.005,ollama,True,True,4,0,,False,True,False,,"The malware creates a scheduled task to run at every logon, which is a technique under T1053 Scheduled Task/Job [1][5]. This technique is used for persistence, allowing the malware to execute every time a user logs on. To detect such a technique, monitoring the creation, modification, or deletion of scheduled tasks through Task Scheduler, WMI, PowerShell, or API-based methods followed by execution from svchost.exe or taskeng.exe is recommended [2]. Additionally, limiting privileges of user accounts and remediate privilege escalation vectors so only authorized administrators can create scheduled tasks on remote systems can help prevent this technique [3]."
+Q08,Attacker creates a new local user account on a compromised Windows host,T1136.001,ollama,True,True,2,0,,False,True,False,,"The attacker creating a new local user account on a compromised Windows host can be detected by monitoring Event ID 4720, which logs account management events. This event is often followed by the creation of a suspicious executable, such as `powershell.exe` or `net.exe`. Additionally, using tools like Sysmon can provide more detailed logs that can help in detecting such activities. [1][4]"
+Q09,Dumping credentials from LSASS process memory with Mimikatz,T1003.001,ollama,True,True,2,0,,True,True,False,,"To dump credentials from the LSASS process memory using Mimikatz, an adversary can run the following command:
+
+* `sekurlsa::Minidump lsassdump.dmp` to create a memory dump.
+* `sekurlsa::logonPasswords` to extract logon passwords from the dump.
+
+This technique is part of T1003.001 OS Credential Dumping: LSASS Memory [1]. For detection, monitor for non-privileged or abnormal processes attempting to open a handle with full access to `lsass.exe` and subsequently invoking memory dump, file creation, or registry modification indicative of credential scraping [2]."
+Q10,Phishing email with a malicious Word attachment,T1566.001,ollama,True,True,5,0,,True,True,False,,"Phishing emails with a malicious Word attachment are a form of T1566.001 Phishing: Spearphishing Attachment [2][5]. Adversaries may use such emails to trick users into opening the attachment, which can contain macros or other malicious content [5]. To mitigate this, organizations can implement the following strategies:
+
+- Restrict web-based content by blocking unknown or unused attachments [1].
+- Use antivirus/antimalware solutions to quarantine suspicious files [3].
+- Apply user account management principles to limit permissions for accounts interacting with email attachments [3].
+- Enable auditing and monitoring for email attachments and file transfers to detect suspicious activity [3].
+- Train users to recognize social engineering techniques and spearphishing emails [3].
+- Implement network intrusion prevention systems to block malicious activity [3].
+
+Detection can be achieved by correlating suspicious email delivery with subsequent file creation and abnormal process execution, especially on Windows platforms [4]."
+Q11,Phishing email containing a link to a fake login page,T1566.002,ollama,True,True,2,0,,False,True,False,,"Phishing emails containing a link to a fake login page are a common tactic used by adversaries. Adversaries may set up a fake website to mimic a legitimate login page, which can be detected by monitoring for unusual activity in email clients and web browsers [4][5]. For example, in Windows environments, detection involves correlating email metadata with browser activity, such as unusual process spawning or download behavior [4]. On macOS, detection focuses on correlating Mail.app logs with unexpected activity in Safari or Chrome, including access to newly registered or lookalike domains [4]. Additionally, adversaries might use tracking pixels or web beacons to verify email receipt and track victim information, and could potentially spoof a complete website using techniques like browser-in-the-browser (BitB) attacks [5]."
+Q12,Requesting Kerberos service tickets to crack service account passwords offline,T1558.003,ollama,True,True,1,0,,False,True,False,,"The technique described is Kerberoasting [2]. Adversaries may request Kerberos service tickets for service accounts that use the RC4 encryption algorithm. Since the ticket portions are encrypted with the service account's password hash, these hashes can be cracked offline, potentially revealing the plaintext credentials [2]."
+Q13,Using an NTLM password hash to authenticate without knowing the password,T1550.002,ollama,True,True,3,0,,False,True,False,,"Adversaries may use an NTLM password hash to authenticate as a user without knowing the plaintext password, a technique known as ""Pass the Hash"" [2][3]. This method is part of the broader technique ""Use Alternate Authentication Material"" [5]. When performing Pass the Hash, valid password hashes for the account being used are captured using a Credential Access technique. These hashes are then used to authenticate as the user, bypassing the need for the cleartext password [2][3]."
+Q14,Lateral movement over RDP using stolen credentials,T1021.001,ollama,True,True,2,0,,False,True,False,,"Adversaries may use stolen credentials to log into a remote system using the Remote Desktop Protocol (RDP) [1][5]. This technique is part of the T1021 Remote Services tactic [1][5]. Once logged in, adversaries can perform actions as the logged-on user [1]. They may also use credential access techniques to acquire these credentials [1]. For example, they might use RDP in conjunction with tools like the Terminal Services DLL for persistence [1]. This method is a common way to expand access within a network [1]."
+Q15,Ransomware encrypting files on file servers,T1486,ollama,True,True,1,0,,True,True,False,,"T1486 Data Encrypted for Impact [1] describes ransomware encrypting files on file servers. Adversaries may target common user files like Office documents, PDFs, images, videos, audio, text, and source code files. This encryption can be part of a broader tactic to render data inaccessible, often requiring a ransom for decryption. [1]"
+Q16,Deleting volume shadow copies so the victim can't restore files,T1490,ollama,True,True,2,0,,True,True,False,,"This technique is related to T1490 Inhibit System Recovery [1][5]. Adversaries may use the `vssadmin.exe` utility to delete all volume shadow copies on a system, as shown in the command `vssadmin.exe delete shadows /all /quiet` [1]. This action can be detected by monitoring process chains that use `vssadmin` with such arguments, along with logs from `WinEventLog:Sysmon`, `WinEventLog:Microsoft-Windows-Backup`, and `WinEventLog:System` [5]."
+Q17,Exfiltrating data by uploading it to cloud storage like Dropbox or Google Drive,T1567.002,ollama,True,True,4,0,,False,True,False,,"The technique involves uploading data to cloud storage services such as Dropbox or Google Drive [3][4]. To detect this, look for unusual processes accessing large local files and initiating HTTPS POST requests to domains associated with cloud storage services [1][5]. Additionally, monitor for processes executing uploads to known storage services, especially when they follow a sequence of compressing files and then uploading them [1][4]. Spike in object access from new IAM users or roles, followed by data exfiltration to external IPs, is another indicator [4]."
+Q18,Malware tunnelling command and control traffic over DNS queries,T1071.004,ollama,True,True,4,0,,True,True,False,,"Adversaries may use DNS tunneling to communicate with remote systems via DNS queries, embedding commands and results within the protocol traffic [2]. This technique is part of the T1071.004 Application Layer Protocol: DNS sub-technique [2].
+
+To mitigate this, organizations should implement network intrusion prevention systems that use network signatures to detect and block specific adversary command and control infrastructure and malware [3][4][5]. Additionally, enforcing proxies and using dedicated servers for services like DNS, allowing only necessary systems to communicate over respective ports/protocols, can help filter out malicious traffic [3][4][5]. Network segmentation by following best practices for network firewall configurations is also recommended to restrict unnecessary traffic [3][4][5]."
+Q19,Attacker disables antivirus and EDR on the endpoint,T1685,ollama,True,True,2,0,,True,True,False,,"The attacker disables antivirus and EDR on the endpoint by stopping specific services, killing processes, or modifying configuration files and registry keys. This action is part of the T1685 Disable or Modify Tools technique [3]. Defenders can detect such behavior by observing process/service termination, registry modification, and the abnormal absence of expected telemetry. Log sources include WinEventLog:System, WinEventLog:Sysmon on Windows [1]."
+Q20,Persistence through registry Run keys,T1547.001,ollama,True,True,2,0,,True,True,False,,"T1547.001 Boot or Logon Autostart Execution: Registry Run Keys / Startup Folder involves adding programs to run keys in the Windows Registry to ensure they execute at boot or logon. Common run keys include:
+
+- HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run
+- HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\RunOnce
+- HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Run
+- HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\RunOnce
+
+Adversaries can add entries to these keys to launch malware or other malicious programs [2][3]. Additionally, the technique can involve modifying the BootExecute value in the HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager key to include malicious executables that run at system boot [2]. The sources don't cover specific detection methods for this technique, but monitoring these keys for unexpected modifications can help identify potential threats."
+Q21,Injecting code into another running process,T1055,ollama,True,True,5,0,,True,True,False,,"Injecting code into another running process can be achieved through several techniques, each with its own method and platform:
+
+- **Dynamic-link Library Injection (T1055.001)**: This involves loading a legitimate DLL into a remote process and manually overwriting the module's AddressOfEntryPoint. This can be used to hide malicious code within a legitimate DLL [1].
+
+- **PE Injection (T1055.002)**: This technique involves copying code into the virtual address space of the target process and invoking it via a new thread. It can be performed using Windows API calls like VirtualAllocEx and WriteProcessMemory [4].
+
+- **Thread Execution Hijacking (T1055.003)**: This method involves suspending an existing process, unmapping its memory, and replacing it with malicious code or a DLL. It uses Windows API calls such as OpenThread, SuspendThread, VirtualAllocEx, WriteProcessMemory, SetThreadContext, and ResumeThread [5].
+
+- **Ptrace System Calls Injection (T1055.008)**: This is specific to Linux and involves attaching to and modifying a running process using ptrace system calls. It can inject arbitrary code by writing to the target process's memory [3].
+
+Each of these techniques allows the execution of code within the context of another process, potentially granting access to the process's memory, system/network resources, and possibly elevated privileges [2][4][5][1][3]."
+Q22,Stealing browser session cookies to bypass MFA,T1539,ollama,True,True,3,0,,False,True,True,,"Stealing browser session cookies to bypass multi-factor authentication (MFA) involves adversaries using stolen session cookies to gain access to web applications or services as an authenticated user. Adversaries may use malware like `Evilginx2` and `Muraena` to steal cookies through a malicious proxy. To detect such theft, defenders should monitor for anomalous behavior, such as unusual modifications to browser cookie stores by processes outside of browsers, and correlate this with authentication events to SaaS or IaaS services [1][4]. Additionally, implementing multi-factor authentication (M1032) can prevent session cookie theft through proxy methods [3].
+
+The sources don't cover this."
+Q23,Exploiting a vulnerable internet-facing web server to get initial access,T1190,ollama,True,True,2,0,,True,True,False,,"T1190 Exploit Public-Facing Application [1] describes exploiting a weakness in an internet-facing host or system to initially access a network. This can involve websites/web servers, databases, standard services, network device administration protocols, and any system with internet-accessible open sockets. Adversaries may exploit vulnerabilities in web servers to gain initial access, as seen in the case of CVE-2010-1428 [5], where unauthenticated access to the JBoss Application Server Web Console was possible due to a misconfiguration."
+Q24,Scanning the internal network for open ports and services,T1046,ollama,True,True,1,0,,False,False,False,,"This activity aligns with the technique T1595.002 Active Scanning: Vulnerability Scanning [1]. Adversaries may scan the internal network for open ports and services to identify potential vulnerabilities that can be exploited. This information can be used for further reconnaissance, establishing operational resources, or gaining initial access to the network [1]."
+Q25,Compressing collected files into an archive before exfiltration,T1560,ollama,True,True,3,0,,True,True,False,,"T1560.001 describes compressing collected files into an archive before exfiltration [1]. Adversaries may use utilities like `makecab` on Windows, `tar` on Linux and macOS, or third-party tools such as 7-Zip, WinRAR, and WinZip [1][2]. This technique helps to obfuscate the data and reduce the amount of data sent over the network [2]. To detect this, look for the execution of compression utilities like `makecab.exe`, `rar.exe`, or `7z.exe` correlated with the creation of large compressed files [3]."
+Q26,Downloading additional tools onto a compromised host,T1105,ollama,True,True,2,0,,False,True,False,,"Adversaries may download additional tools onto a compromised host using various methods. They can leverage utilities like `wget`, `curl`, `scp`, `sftp`, `tftp`, `rsync`, `finger`, and `certutil` on Linux, macOS, and Windows systems [5][4]. On Windows, they might also use PowerShell commands such as `Invoke-WebRequest` or `New-Object Net.WebClient`. Additionally, adversaries can abuse installers and package managers like `yum` or `winget` to download tools [4][5]. These techniques allow adversaries to extend their capabilities on the compromised host [5]."
+Q27,Using WMI to execute commands on a remote machine,T1047,ollama,True,True,2,0,,False,True,False,,"Adversaries can use WMI to execute commands on a remote machine by leveraging the WMI service, which allows both local and remote access [1]. For instance, `wmic.exe` can be used to execute commands remotely. However, `wmic.exe` is deprecated as of January 2024, and will be replaced by PowerShell [1]. Remote WMI over WinRM operates over port 5985 for HTTP and 5986 for HTTPS [1]. To detect such activity, behavioral detection strategies can be employed, monitoring process creation, command execution, and corresponding network connections [2]."
+Q28,Forging Kerberos TGTs with the krbtgt hash,T1558.001,ollama,True,True,3,0,,True,True,False,,"Forging Kerberos TGTs with the krbtgt hash is related to the technique T1558.001 Steal or Forge Kerberos Tickets: Golden Ticket [1]. Adversaries can use the krbtgt account password hash to forge Kerberos ticket-granting tickets (TGTs), which can then be used to request ticket granting service (TGS) tickets and gain access to any resource in the Active Directory domain [1]. To mitigate this, it is recommended to reset the built-in krbtgt account password twice, forcing replication, and considering rotating the password every 180 days [2][5]."
+Q29,Pretending to be a domain controller to replicate password hashes,T1003.006,ollama,True,True,1,0,,False,False,False,,"The technique involves registering a rogue Domain Controller to replicate password hashes, which is described in T1207 Rogue Domain Controller [1]. Adversaries can use methods like DCShadow to manipulate Active Directory data and register a rogue DC, allowing them to inject and replicate changes into the AD infrastructure, including password hashes. This can bypass system logging and security monitors, making it difficult to detect [1]."
+Q30,A web shell uploaded to an IIS server,T1505.003,ollama,True,True,2,0,,True,True,False,,"The technique described is T1505.003 Server Software Component: Web Shell [3][4]. This technique involves adversaries backdooring web servers with web shells to establish persistent access. A web shell is a web script placed on an openly accessible web server, allowing adversaries to access the server as a gateway into a network. Detection strategies include monitoring for unexpected file creations in web directories followed by web server processes spawning command shells or script interpreters [3]."
+Q31,Installing a new Windows service for persistence,T1543.003,ollama,True,True,1,0,,True,True,False,,"T1543.003 [1]
+
+Adversaries may create or modify Windows services to repeatedly execute malicious payloads as part of persistence. This can be done by installing a new service or modifying an existing service to execute at startup. Service configurations can be set or modified using system utilities like `sc.exe`, by directly modifying the Registry, or by interacting with the Windows API. [1]"
+Q32,Abusing legitimate remote access software such as AnyDesk,T1219,ollama,True,True,3,0,,True,True,False,,"Adversaries may abuse legitimate remote access software like AnyDesk to establish an interactive command and control channel within a network. This technique is part of the T1219 Remote Access Tools tactic [4][1]. AnyDesk, along with other tools such as VNC, TeamViewer, and LogMein, can be used to remotely control a target system as if the user were physically present. Detection strategies include monitoring for the execution of known or custom remote desktop daemons or tunneling agents that initiate external communication after launch [2]."
+Q33,Using stolen credentials for cloud accounts like Azure AD or AWS,T1078.004,ollama,True,True,4,0,,False,True,False,,"Using stolen credentials for cloud accounts like Azure AD or AWS can be mitigated and detected through several strategies:
+
+- **Password Policies and Rotation:** Ensure complex, unique passwords are used for cloud accounts, especially privileged ones, and rotate them regularly [1].
+- **Disable Legacy Authentication:** Require modern authentication protocols to enhance security [1].
+- **Review Privileged Access:** Routinely review and manage privileged cloud account permissions to prevent unauthorized access [1].
+- **Credential Stuffing Detection:** Monitor for multiple failed authentication attempts using distinct username/password pairs from a single IP address or session within a short time window [4].
+- **Behavioral Detection of Cloud API Usage:** Monitor for anomalous API calls that might indicate adversarial use of stolen credentials [5].
+- **Account Discovery Detection:** Look for unexpected use of cloud account management tools like AWS CLI, Azure CLI, or GCP CLI from endpoints or cloud shells [3].
+
+These measures help in both preventing and detecting unauthorized access and misuse of stolen credentials in cloud environments."
+Q34,How can I detect password spraying?,T1110.003,ollama,True,True,2,0,,False,True,False,,"To detect password spraying, you should monitor for the following patterns across different platforms:
+
+- **Windows**: High volume of authentication failures using a single password (or small set) across many different user accounts within a defined time window [1][5].
+- **Linux**: Authentication failures across different accounts using a repeated or similar password via SSH or PAM stack within a short window [1].
+- **macOS**: Multiple failed login attempts across different users using common password patterns [1].
+- **Identity Provider**: Sign-in failures across enterprise SSO applications or SaaS platforms from the same IP address using the same password against multiple user identities [1].
+- **Network Devices**: Authentication failure logs on routers/switches showing repeated use of default or common passwords across multiple accounts [1].
+- **Containers**: Repeated failed authentication attempts to container APIs, control planes, or login shells across many user names using the same password [1].
+- **Office Suite**: Failed authentication attempts across user mailboxes using identical or common passwords [1].
+- **SaaS**: SaaS applications receiving authentication failures for dozens of accounts using the same password or login signature [1].
+
+Additionally, look for high-volume failed logon attempts followed by a successful one from a suspicious user, host, or timeframe on Windows [5]."
+Q35,What logs should I monitor to detect Kerberoasting?,T1558.003,ollama,True,True,1,0,,True,True,True,,"To detect Kerberoasting (T1558.003), you should monitor the following logs:
+
+- Windows: Event ID 4769 in the WinEventLog:Security log for anomalous Kerberos TGS requests with RC4 encryption (etype 0x17), accounts requesting an unusual number of service tickets in a short period, or service accounts targeted outside normal usage baselines. Correlate suspicious process activity, such as Mimikatz invoking LSASS access, with Kerberos ticket anomalies [1].
+
+The sources don't cover this."
+Q36,How do I detect MFA request generation?,T1621,ollama,True,True,1,0,,True,True,False,,"To detect MFA request generation, monitor for the following:
+
+- Excessive or anomalous MFA push notifications or token requests, especially from unusual IPs or geolocations, and not corresponding to legitimate user-initiated sessions [1].
+- Abnormal MFA activity within cloud service provider logs, such as repeated generation of MFA challenges for the same user session or mismatched MFA device and login origin [1].
+- Repeated failed login events followed by MFA challenges triggered in rapid succession, particularly from service accounts or anomalous IP addresses [1].
+- Unusual frequency of login attempts that trigger MFA prompts, especially when MFA challenges do not match expected user behavior [1].
+- Anomalous OAuth or SSO logins that repeatedly generate MFA challenges, particularly where MFA approvals are denied or timed out by the user [1].
+- User account logon attempts that trigger multiple MFA challenges through enterprise identity integrations, especially if MFA push requests are generated without successful interactive login [1].
+
+Sources:
+[1] T1621 Multi-Factor Authentication Request Generation: how to detect it [https://attack.mitre.org/techniques/T1621]"
+Q37,How would I spot LSASS credential dumping in my SIEM?,T1003.001,ollama,True,True,3,0,,False,True,False,,"To spot LSASS credential dumping in your SIEM, look for the following indicators:
+
+- Non-privileged processes attempting to open a handle with full access (0x1F0FFF) to lsass.exe and subsequently invoking memory dump, file creation, or registry modification [1].
+- Processes running tools like Mimikatz, sekurlsa, or rundll32.exe to create memory dumps of lsass.exe [3].
+- Use of command-line tools such as procdump to generate memory dumps of lsass.exe [3].
+- Correlation of these activities with the creation of dump files or registry modifications indicative of credential scraping [1][4].
+
+Log sources to monitor include WinEventLog:Sysmon and WinEventLog:Security on Windows systems [1][4]."
+Q38,What should I monitor to detect scheduled task persistence?,T1053.005,ollama,True,True,5,0,,False,True,False,,"To detect scheduled task persistence, you should monitor the following:
+
+- **Windows**: Monitor the creation, modification, or deletion of scheduled tasks through Task Scheduler, WMI, PowerShell, or API-based methods, and their execution from svchost.exe or taskeng.exe. Check logs from WinEventLog:Security and WinEventLog:Sysmon [2][5].
+
+- **Linux**: Look for changes in crontab entries by non-root users or from abnormal parent processes, and the execution of uncommon binaries at scheduled intervals. Monitor auditd:SYSCALL logs [3][5].
+
+- **macOS**: Watch for crontab job additions or modifications via the `crontab` utility or direct edits, especially those created by interactive users executing hidden or renamed scripts. Check macos:unifiedlog, fs:fsusage, and macos:osquery logs [4][5].
+
+- **Containers**: Detect the abuse of container orchestration platforms like Kubernetes where adversaries create CronJobs to maintain persistence. Monitor kubernetes:apiserver, kubernetes:events, and container:proxy logs [1][5].
+
+- **ESXi**: Monitor the direct modification of crontab entries in /var/spool/cron/crontabs/root or /etc/rc.local.d/local.sh, and the execution of scripts linked to lateral movement or malware persistence. Check esxi:hostd, esxi:cron, and esxi:vmkernel logs [3][5]."
+Q39,How do I detect shadow copy deletion?,T1490,ollama,True,True,1,0,,False,False,False,,"Shadow copy deletion can be detected by monitoring for high-frequency file write operations using uncommon extensions, often followed by ransom note creation and registry tampering. This technique is associated with T1486 Data Encrypted for Impact [5]. Specifically, you should look for these log sources:
+
+- Windows: `WinEventLog:Sysmon` [5]
+- Linux: `auditd:SYSCALL` [5]
+- macOS: `macos:unifiedlog` [5]
+- ESXi: `esxi:vmkernel`, `esxi:shell` [5]"
+Q40,How do I prevent password spraying attacks?,T1110.003,ollama,True,True,4,0,,False,True,False,,"To prevent password spraying attacks, consider the following mitigations:
+
+- Implement multi-factor authentication (MFA) where possible, including on externally facing services [1][3].
+- Follow NIST guidelines when creating password policies to ensure complexity and regular rotation [1][3].
+- Set account lockout policies after a certain number of failed login attempts to prevent password guessing, while avoiding overly strict policies that could cause operational issues [1][3].
+- Use conditional access policies to block logins from non-compliant devices or from outside defined organization IP ranges [1].
+- Block risky authentication requests, such as those originating from anonymizing services/proxies [1].
+- Train users to only accept valid push notifications and to report suspicious ones, as a form of MFA [4].
+- Enforce strong password policies for domain accounts to reduce the likelihood of password guessing and credential stuffing [4].
+- Target commonly used ports and services with strong security measures, such as SSH, Telnet, FTP, NetBIOS, SMB, LDAP, Kerberos, RDP, HTTP, MSSQL, Oracle, MySQL, and VNC [5].
+- Secure single sign-on (SSO) and cloud-based applications using federated authentication protocols, and protect externally facing email applications like Office 365 [5]."
+Q41,How can I stop MFA fatigue attacks?,T1621,ollama,True,True,5,0,,False,True,False,,"To mitigate MFA fatigue attacks, you can implement the following strategies:
+
+- Train users to only accept MFA requests from login attempts they initiated and to review the source location of the login attempt prompting the MFA requests [2][3][4]. This helps users recognize and reject unauthorized attempts.
+
+- Implement account use policies that restrict login attempts and subsequent MFA service requests from suspicious locations or when the source of the login attempts do not match the location of the MFA smart device [1][3].
+
+- Monitor for excessive or anomalous MFA push notifications or token requests, especially when login attempts originate from unusual IPs or geolocations [3]. This can help detect and respond to potential MFA fatigue attacks.
+
+- Ensure proper policies are implemented for the secure enrollment and deactivation of MFA for user accounts [5]. This includes reviewing MFA actions alongside authentication logs to ensure MFA-based logins are functioning as intended.
+
+- Configure MFA solutions to ""fail closed"" rather than grant access in case of serious errors, ensuring that any issues do not compromise account security [5]."
+Q42,What mitigations reduce the risk of pass the hash?,T1550.002,ollama,True,True,4,0,,True,True,False,,"Mitigations to reduce the risk of pass the hash include:
+
+- Applying patch KB2871997 to Windows 7 and higher systems to limit the default access of accounts in the local administrator group [1].
+- Enabling pass the hash mitigations through User Account Control (UAC) restrictions on local accounts on network logons. This can be configured via the Registry key HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\LocalAccountTokenFilterPolicy or through Group Policy Object (GPO) settings [1].
+- Avoiding the practice of allowing a domain user to be in the local administrator group on multiple systems [1].
+- Limiting credential overlap across systems to prevent credential compromise and reduce the adversary's ability to perform lateral movement [1].
+- Training users to be aware of access or manipulation attempts by an adversary to reduce the risk of successful spearphishing and social engineering techniques that involve user interaction [3].
+
+The technique ID for the pass the hash technique is T1550.002 [2][5]."
+Q43,How do I protect against spearphishing attachments?,T1566.001,ollama,True,True,3,0,,False,True,False,,"To protect against spearphishing attachments, consider the following mitigations:
+
+- Restrict web-based content by blocking unknown or unused attachments by default [1][2].
+- Use antivirus/antimalware to automatically quarantine suspicious files [2].
+- Apply user account management principles to limit permissions for accounts interacting with email attachments [2].
+- Enable auditing and monitoring for email attachments and file transfers to detect and investigate suspicious activity [2].
+- Use network intrusion prevention systems to block malicious email attachments [2].
+- Configure software to use anti-spoofing and email authentication mechanisms, such as SPF, DKIM, and DMARC [2][3].
+- Train users to identify social engineering techniques and spearphishing attempts [2][3].
+
+These steps can significantly reduce the risk of successful spearphishing attacks [1][2][3]."
+Q44,How can we prevent Kerberoasting?,T1558.003,ollama,True,True,1,0,,False,True,False,,"To prevent Kerberoasting, consider the following mitigations:
+
+- Implement strong password policies for service accounts, ensuring passwords are at least 25 characters long and complex [1]. Also, make sure these passwords expire periodically.
+- Use Group Managed Service Accounts or a third-party product like a password vaulting solution [1].
+- Enable AES Kerberos encryption or a stronger encryption algorithm instead of RC4 [1].
+- Limit service accounts to minimal required privileges, including avoiding membership in privileged groups like Domain Administrators [1].
+
+These steps can significantly reduce the risk of Kerberoasting attacks."
+Q45,Which threat groups use password spraying?,T1110.003,ollama,True,True,1,0,,True,True,False,,"Threat groups known to use T1110.003 Brute Force: Password Spraying include APT28, APT29, APT33, Agrius, Chimera, Ember Bear, HAFNIUM, HEXANE, Lazarus Group, Leafminer, NIMBUS MANTICORE, and Silent Librarian [1]."
+Q46,Which threat actors use MFA request generation?,T1621,ollama,True,True,1,0,,True,True,False,,"Threat groups known to use T1621 Multi-Factor Authentication Request Generation include APT29, LAPSUS$, and Scattered Spider [1]."
+Q47,Is the Apache Log4j2 remote code execution vulnerability known to be exploited?,CVE-2021-44228,ollama,True,True,2,0,,True,True,False,,"Yes, the Apache Log4j2 remote code execution vulnerability (CVE-2021-44228) is known to be exploited in the wild [1][2]."
+Q48,What is the required action for CVE-2020-1938?,CVE-2020-1938,ollama,True,True,1,0,,True,True,False,,The required action for CVE-2020-1938 is to apply updates per vendor instructions. [1]
+Q49,Microsoft Netlogon privilege escalation vulnerability,CVE-2020-1472,ollama,True,True,1,0,,True,True,False,,The CVE ID for the Microsoft Netlogon privilege escalation vulnerability is CVE-2020-1472 [1]. This vulnerability affects Microsoft's Netlogon Remote Protocol (MS-NRPC) and can be exploited to run a specially crafted application on a device on the network. It has been added to the CISA Known Exploited Vulnerabilities (KEV) catalogue and has been known to be used in ransomware campaigns. The required action is to apply updates according to vendor instructions. The due date for US federal agencies is 2022-05-03 [1].
+Q50,MOVEit Transfer SQL injection vulnerability,CVE-2023-34362,ollama,True,True,1,0,,True,True,False,,"The CVE ID for the MOVEit Transfer SQL injection vulnerability is CVE-2023-34362 [1]. This vulnerability affects the Progress MOVEit Transfer product and has been exploited in the wild. It allows unauthenticated attackers to gain unauthorized access to the database, potentially inferring database structure and contents or executing SQL statements. The required action is to apply updates according to vendor instructions. The due date for US federal agencies is 2023-06-23."
+Q51,Is the Palo Alto PAN-OS command injection vulnerability in KEV?,CVE-2024-3400,ollama,True,True,3,0,,True,True,False,,"Yes, the Palo Alto PAN-OS command injection vulnerability is in the CISA Known Exploited Vulnerabilities (KEV) catalogue. Specifically, this includes:
+
+- CVE-2024-3400: Palo Alto Networks PAN-OS Command Injection Vulnerability [1]
+- CVE-2024-9474: Palo Alto Networks PAN-OS Management Interface OS Command Injection Vulnerability [2]
+- CVE-2024-9463: Palo Alto Networks Expedition OS Command Injection Vulnerability [3]"
+Q52,Fortinet FortiOS SSL VPN path traversal vulnerability,CVE-2018-13379,ollama,True,True,1,0,,True,True,False,,The vulnerability in question is CVE-2018-13379: Fortinet FortiOS SSL VPN Path Traversal Vulnerability [1]. This vulnerability allows an unauthenticated attacker to download FortiOS system files through specially crafted HTTP resource requests. The required action is to apply updates according to vendor instructions. The due date for US federal agencies is 2022-05-03.
+Q53,Is Log4Shell being exploited and what should we do?,CVE-2021-44228,ollama,True,True,1,0,,True,True,False,,Log4Shell (CVE-2021-44228) is being exploited in the wild [1]. The required action is to apply updates or remove affected assets from agency networks. Temporary mitigations are only acceptable until updates are available [1].
+Q54,Tell me about EternalBlue,CVE-2017-0144,ollama,True,True,0,0,,False,False,True,,The sources don't cover this.
+Q55,What is Zerologon?,CVE-2020-1472,ollama,True,True,1,0,,True,True,False,,Zerologon is another name for the CVE-2020-1472 vulnerability in Microsoft Netlogon Remote Protocol (MS-NRPC). [1]
+Q56,Is Citrix Bleed in the KEV catalogue?,CVE-2023-4966,ollama,True,True,0,0,,False,False,True,,The sources don't cover this.
+Q57,What should I do about PrintNightmare?,CVE-2021-34527,ollama,True,True,1,0,,False,True,False,,You should apply updates per vendor instructions to address the PrintNightmare vulnerability. This is crucial to prevent remote code execution with SYSTEM privileges [1].
+Q58,Ghostcat vulnerability,CVE-2020-1938,ollama,True,True,0,0,,False,False,True,,The sources don't cover this.
+Q59,Is Shellshock still being exploited?,CVE-2014-6271,ollama,False,True,0,0,,False,False,True,,The sources don't cover this. I can answer questions about MITRE ATT&CK techniques and the CISA Known Exploited Vulnerabilities catalogue.
+Q60,What is ProxyShell?,CVE-2021-34473,ollama,False,True,0,0,,False,False,True,,The sources don't cover this. I can answer questions about MITRE ATT&CK techniques and the CISA Known Exploited Vulnerabilities catalogue.
+Q61,Spring4Shell remote code execution,CVE-2022-22965,ollama,False,True,0,0,,False,False,True,,The sources don't cover this. I can answer questions about MITRE ATT&CK techniques and the CISA Known Exploited Vulnerabilities catalogue.
+Q62,Explain T1078,T1078,ollama,True,True,4,0,,True,True,False,,"T1078 Valid Accounts is a technique where adversaries obtain and abuse legitimate credentials to gain unauthorized access, maintain persistence, escalate privileges, or evade detection [1]. This technique can be applied across various platforms including containers, ESXi, IaaS, identity providers, and operating systems like Linux, macOS, and Windows [1].
+
+Adversaries might use inactive accounts to avoid detection, and the overlap of permissions for local, domain, and cloud accounts can allow adversaries to pivot across systems and gain high-level access [1]. This technique is employed by various threat groups such as APT18, APT28, and others [2].
+
+To prevent T1078, organizations should implement strong password policies, regularly audit user accounts, and manage privileged accounts properly [3]. Multi-factor authentication (MFA) is crucial to mitigate the risk of unauthorized access even if credentials are compromised [5]. Additionally, training users to recognize and report suspicious activities, and configuring Active Directory to use modern authentication protocols can help [5]."
+Q63,What does CVE-2023-23397 affect?,CVE-2023-23397,ollama,True,True,1,0,,True,True,False,,CVE-2023-23397 affects Microsoft Office Outlook [1].
+Q64,Give me detection ideas for T1059.001,T1059.001,ollama,True,True,2,0,,True,True,False,,"Detection ideas for T1059.001 Command and Scripting Interpreter: PowerShell include:
+
+- Monitoring for unusual parent processes and suspicious modules loaded when PowerShell is launched, especially with encoded commands [1].
+- Detecting network connections and child process spawning following the launch of PowerShell [1].
+- Analyzing event logs from WinEventLog:Sysmon and WinEventLog:PowerShell for suspicious activities [1].
+- Using behavioral detection to identify indirect invocations of PowerShell through .NET automation [1][2].
+
+These methods can help identify potential malicious uses of PowerShell by adversaries."
+X01,How do I bake sourdough bread?,,ollama,False,True,0,0,,,,True,,The sources don't cover this. I can answer questions about MITRE ATT&CK techniques and the CISA Known Exploited Vulnerabilities catalogue.
+X02,What is the capital of Australia?,,ollama,False,True,0,0,,,,True,,The sources don't cover this. I can answer questions about MITRE ATT&CK techniques and the CISA Known Exploited Vulnerabilities catalogue.
+X03,Recommend a good laptop for gaming,,ollama,False,True,0,0,,,,True,,The sources don't cover this. I can answer questions about MITRE ATT&CK techniques and the CISA Known Exploited Vulnerabilities catalogue.
+X04,Who won the 2022 football World Cup?,,ollama,False,True,0,0,,,,True,,The sources don't cover this. I can answer questions about MITRE ATT&CK techniques and the CISA Known Exploited Vulnerabilities catalogue.
+H01,Adversary uses a stolen session token to access a cloud mailbox,T1550.001 / T1539 / T1528,ollama,True,True,3,0,,False,False,False,,"The adversary's use of a stolen session token to access a cloud mailbox can be detected through the following strategies:
+
+- Monitor for anomalous access to cloud web applications using session tokens without corresponding MFA/credential validation, often from unusual locations or device fingerprints [3][2].
+- Focus on detecting the reuse of OAuth access tokens from different geographic regions without full login events [2].
+- Look for suspicious patterns in MailItemsAccessed and OAuth misuse in cloud-based email systems [1].
+
+These detection strategies can help identify unauthorized access attempts using stolen session tokens."
+H02,Attacker modifies the hosts file firewall rules to allow inbound traffic,T1686,ollama,True,True,0,0,,False,False,True,,The sources don't cover this.
+H03,Keylogger capturing user keystrokes,T1056.001,ollama,True,True,2,0,,True,True,False,,"T1056.001 Input Capture: Keylogging [1] describes keyloggers as a method adversaries use to log user keystrokes, intercepting credentials as the user types them. Keyloggers can be implemented through various methods including hooking API callbacks, reading raw keystroke data from hardware buffers, modifying the Windows Registry, or using custom drivers. These techniques are used to capture credentials, especially when OS Credential Dumping is ineffective. [1]
+
+The technique can be detected by monitoring for unexpected API calls to capture keyboard input, driver loads for keyloggers, or remote use of smart card authentication via logon sessions not initiated by local user interaction on Windows systems. On Linux, unauthorized keylogger behavior can be detected through access to `/dev/input`, loading kernel modules, or polling user input devices from non-user shells. On macOS, processes accessing TCC-protected input APIs or polling HID services without user interaction, or dynamically loaded keylogging frameworks using accessibility privileges should be monitored. [4]"
+H04,Attackers enumerate Active Directory users and groups,T1087.002 / T1069.002 / T1087,ollama,True,True,1,0,,False,True,False,,"Attackers may enumerate Active Directory users and groups using commands like `net user /domain` and `net group /domain` on Windows [1]. On macOS, they can use `dscacheutil -q group` [1]. On Linux, `ldapsearch` can be used [1]."
+H05,Malicious macro in an Excel file runs when the user enables content,T1204.002 / T1566.001,ollama,True,True,0,0,,False,False,True,,The sources don't cover this.
+H06,Clearing bash history on a Linux server,T1070.003,ollama,True,True,3,0,,False,True,False,,"Clearing bash history on a Linux server is a technique used by adversaries to remove evidence of their activities [1]. This can be done by manually clearing the history using the command `history -c` or by deleting the bash history file with `rm ~/.bash_history` [1]. To detect this action, you should monitor for these commands being executed, as well as the deletion or modification of the `~/.bash_history` file [2]. Additionally, implementing mitigations such as restricting file permissions on the `~/.bash_history` file can prevent adversaries from altering it [4]."
+H07,Attacker adds their own SSH key to authorized_keys for persistence,T1098.004,ollama,True,True,3,0,,False,True,False,,"The technique involves an attacker adding their own SSH key to the authorized_keys file to maintain persistence. This can be done in various environments such as Linux, macOS, ESXi, IaaS, and network devices [1][3]. For example, in cloud environments, an adversary might use the Google Cloud CLI’s “add-metadata” command or a PATCH request to the Azure API to add their SSH key to a user account [1][2]. This allows the attacker to log in as an existing user via SSH and potentially escalate privileges [1][2][3]."
+H08,Using PsExec to run commands on other hosts over SMB,T1021.002 / T1569.002,ollama,True,True,1,0,,True,True,True,,"The sources don't cover this specific technique or tool usage. However, techniques involving SMB and administrative shares, such as T1021.002 [1], are relevant. PsExec could be used in conjunction with these techniques to run commands on other hosts over SMB, but this is not directly addressed in the provided sources."
+H09,How can I detect pass the hash?,T1550.002,ollama,True,True,1,0,,True,True,False,,"To detect pass the hash (T1550.002), you should monitor for anomalous NTLM logon events that occur without corresponding domain logon events, especially from lateral systems or built-in administrative tools [1]. Specifically, look for mismatches between the source user context and the system being accessed, and correlate LogonSession creation, NTLM authentications, and process/service initiation to identify suspicious use of stolen password hashes for remote access or service logon without password entry [1]. Additionally, detect overpass-the-hash by combining Kerberos ticket issuance with NTLM-based lateral movement [1]. Log sources to monitor include WinEventLog:Security and WinEventLog:Sysmon [1]."
+H10,How do I detect a new local administrator account being created?,T1136.001 / T1098,ollama,True,True,2,0,,False,True,False,,"To detect the creation of a new local administrator account, you should monitor for the following activities across different platforms:
+
+- **Windows**: Look for events related to the creation of new local accounts, particularly those with administrative privileges. This can be detected through Event ID 4720 in the Security log, which records account management events. Additionally, monitoring process creation events (e.g., `powershell.exe` or `net.exe`) that precede the account creation can help identify suspicious activity. [1][3]
+
+- **Linux**: Monitor for the execution of commands like `useradd` or `adduser` that are used to create new local accounts. The `auditd` system can provide detailed logs of these commands, which can be correlated with the creation of new accounts. [1][3]
+
+- **macOS**: Watch for the use of `dscl` commands or GUI tools to create new local administrator accounts. Changes to the local directory services database, such as modifications to user plist files, should be logged and monitored. [1][3]
+
+- **Containers**: Keep an eye on the creation of new local accounts within containers, which might involve modifying `/etc/passwd` directly. Runtime telemetry tools like Falco or eBPF hooks can help detect such activities. [1]
+
+By setting up appropriate logging and monitoring tools, you can effectively detect the creation of new local administrator accounts across these platforms."
+H11,How do I prevent credential dumping from LSASS?,T1003.001,ollama,True,True,4,0,,False,True,False,,"To prevent credential dumping from LSASS, consider the following mitigations:
+
+- Disable or restrict NTLM and WDigest authentication [3][5].
+- Enable Credential Guard on Windows 10, though it requires specific hardware and firmware [1][5].
+- Enable Protected Process Light for LSA on Windows 8.1 and Windows Server 2012 R2 [1][5].
+- Train users and administrators to avoid using the same password across multiple accounts [1][4].
+- Ensure local administrator accounts have complex, unique passwords [1][4][5].
+- Use Attack Surface Reduction (ASR) rules on Windows 10 to secure LSASS [1][4].
+- Encrypt sensitive information, such as Domain Controller backups [4].
+- Limit domain accounts in local administrator groups to avoid having the same password on all systems [1][4][5].
+- Use built-in tools like `comsvcs.dll` to create memory dumps, but ensure proper security practices [3].
+- Follow best practices for Active Directory configuration, such as managing access control lists and adding users to the ""Protected Users"" group [5]."
+H12,How do we mitigate web shells on our servers?,T1505.003,ollama,True,True,4,0,,False,True,False,,"To mitigate web shells on servers, consider the following actions:
+
+- Disable or remove features from web technologies that may be abused, such as PHP’s `eval()` function [1].
+- Enforce the principle of least privilege by limiting user account privileges so only authorized accounts can modify the web directory [1].
+- Use network intrusion detection and prevention systems that use network signatures to identify traffic for specific adversary malware to mitigate activity at the network level [3][5].
+- Restrict and monitor outbound web traffic (HTTP/HTTPS) from critical servers to only approved destinations to limit the ability to initiate outbound HTTP/HTTPS connections [3].
+- Monitor for unexpected file creation in web directories followed by web server processes spawning command shells or script interpreters [4]."
+H13,Which groups use Kerberoasting?,T1558.003,ollama,True,True,1,0,,True,True,False,,"Threat groups known to use Kerberoasting (T1558.003) include FIN7, Indrik Spider, NIMBUS MANTICORE, and Wizard Spider [1]."
+H14,Cisco IOS XE web UI privilege escalation,CVE-2023-20198,ollama,True,True,1,0,,True,True,False,,"The vulnerability CVE-2023-20198 describes a privilege escalation issue in Cisco IOS XE Web UI. This vulnerability allows a remote, unauthenticated attacker to create an account with privilege level 15 access, thereby gaining control of the affected device. [1]
+
+Required actions include verifying compliance with BOD 23-02 and applying vendor mitigations. For systems exposed to the internet or untrusted networks, follow vendor instructions to determine if compromise has occurred and report findings to CISA. The due date for US federal agencies is 2023-10-20. [1]"
+H15,Is the Outlook privilege escalation vulnerability from 2023 known exploited?,CVE-2023-23397,ollama,True,True,1,0,,True,True,False,,"The Outlook privilege escalation vulnerability from 2023, CVE-2023-23397, is known to have been exploited in the wild [1].
+
+References:
+[1] CVE-2023-23397: Microsoft Office Outlook Privilege Escalation Vulnerability [1]"
+H16,Microsoft Exchange Server ProxyLogon remote code execution,CVE-2021-26855,ollama,True,True,5,0,,True,True,False,,"The Microsoft Exchange Server ProxyLogon remote code execution vulnerabilities, including CVE-2021-26855, CVE-2021-26857, CVE-2021-26858, and CVE-2021-27065, are part of a series of vulnerabilities that allow for remote code execution. These vulnerabilities were added to the CISA Known Exploited Vulnerabilities (KEV) catalogue on 2021-11-03 and have been known to be used in ransomware campaigns. The required action is to apply updates as per vendor instructions. The due date for US federal agencies is 2022-05-03 for CVE-2021-26855, CVE-2021-26857, and CVE-2021-26858, while it is 2021-11-17 for CVE-2021-34473 [1][2][3][4][5]."
+H17,What should we do about BlueKeep?,CVE-2019-0708,ollama,True,True,1,0,,False,True,False,,Apply updates per vendor instructions [1]. Due date for US federal agencies is 2022-05-03 [1].
+H18,Heartbleed OpenSSL,CVE-2014-0160,ollama,True,True,1,0,,True,True,False,,"The Heartbleed OpenSSL vulnerability, referenced as CVE-2014-0160 [1], involves the improper handling of Heartbeat Extension packets in the TLS and DTLS implementations of OpenSSL. This allows remote attackers to obtain sensitive information. To detect potential exploitation, monitor for unusual outbound network activity with high bytes_out:bytes_in ratios or HTTP headers/payloads containing Base64/MIME blocks, as this may indicate an attacker attempting to exploit the vulnerability. Apply vendor updates promptly to mitigate the risk."
+H19,Follina MSDT vulnerability,CVE-2022-30190,ollama,True,True,1,0,,True,True,False,,"The answer refers to the CVE-2022-30190 vulnerability [1].
+
+- CVE-2022-30190: Microsoft Windows Support Diagnostic Tool (MSDT) Remote Code Execution Vulnerability. This vulnerability allows for remote code execution when MSDT is called using the URL protocol from a calling application such as Word. It has been exploited in the wild and is part of the CISA Known Exploited Vulnerabilities (KEV) catalogue. The required action is to apply updates per vendor instructions. The due date for US federal agencies is 2022-07-05. [1]"
+H20,Give me mitigations for T1486,T1486,ollama,True,True,1,0,,True,True,False,,"Mitigations for T1486 Data Encrypted for Impact include:
+- On Windows 10, enable cloud-delivered protection and Attack Surface Reduction (ASR) rules to block the execution of files that resemble ransomware [1].
+- In AWS environments, create an IAM policy to restrict or block the use of SSE-C on S3 buckets [1].
+- Implement IT disaster recovery plans that contain procedures for regularly taking and testing data backups. Ensure backups are stored off system and protected from common methods adversaries may use to gain access and destroy the backups to prevent recovery. Consider enabling versioning in cloud environments to maintain backup copies of storage objects [1].
+- The sources don't cover specific tools or techniques beyond these general recommendations."
